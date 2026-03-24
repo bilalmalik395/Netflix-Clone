@@ -1,1 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Netflix</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;overflow-x:hidden;}
+a{text-decoration:none;}
+
+
+#intro{
+  position:fixed; inset:0; background:#000; z-index:99999; display:flex; justify-content:center; align-items:center;
+}
+.netflix-text{
+  display:flex; gap:10px; font-size:120px; font-weight:900; color:#e50914;
+}
+.netflix-text span{
+  opacity:0; transform:translateY(60px); animation:letterIn 0.5s ease forwards;
+}
+.netflix-text span:nth-child(1){animation-delay:0s}
+.netflix-text span:nth-child(2){animation-delay:.1s}
+.netflix-text span:nth-child(3){animation-delay:.2s}
+.netflix-text span:nth-child(4){animation-delay:.3s}
+.netflix-text span:nth-child(5){animation-delay:.4s}
+.netflix-text span:nth-child(6){animation-delay:.5s}
+.netflix-text span:nth-child(7){animation-delay:.6s}
+.netflix-text span:nth-child(8){animation-delay:.7s}
+.netflix-text span:nth-child(9){animation-delay:.8s}
+
+@keyframes letterIn{to{opacity:1; transform:translateY(0); text-shadow:0 0 40px rgba(229,9,20,0.8);} }
+#intro.fadeOut{animation:introOut 0.8s ease forwards;}
+@keyframes introOut{to{opacity:0;visibility:hidden}}
+
+
+#main{opacity:0; transition:opacity 1s ease;}
+#main.show{opacity:1;}
+
+ 
+.navbar{position:fixed;width:100%;z-index:1000;padding:15px 0;background:#fff;box-shadow:0 5px 20px rgba(0,0,0,0.15);}
+.navbar-brand{font-weight:900;color:#e50914!important;font-size:28px;}
+.nav-link{color:#000!important;padding:8px 18px;border-radius:30px;transition:0.3s;}
+.nav-link:hover{background:#e50914;color:#fff!important;}
+.nav-btn{border:1px solid #000;padding:8px 22px;border-radius:30px;background:transparent;color:#000;transition:0.3s;}
+.nav-btn:hover{background:#000;color:#fff;}
+
+
+.hero{height:100vh;background:linear-gradient(to right,rgba(0,0,0,0.85),rgba(0,0,0,0.25)),url("https://images.unsplash.com/photo-1517602302552-471fe67acf66");background-size:cover;background-position:center;position:relative;}
+.hero-content{position:absolute;bottom:18%;max-width:650px;animation:heroIn 1.8s ease forwards;}
+@keyframes heroIn{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}
+
+
+.section{padding:90px 0}
+.section-title{font-size:28px;margin-bottom:20px}
+.row-scroll{display:flex;gap:25px;overflow-x:auto;padding:20px 0;}
+.card-movie{min-width:220px;border-radius:18px;overflow:hidden;transition:0.4s;}
+.card-movie img{width:100%;}
+.card-movie:hover{transform:scale(1.3);z-index:10;box-shadow:0 40px 90px rgba(229,9,20,0.7);}
+
+
+.feature-banner{height:70vh;background:linear-gradient(to top,rgba(0,0,0,0.9),rgba(0,0,0,0.2)),url("https://images.unsplash.com/photo-1524985069026-dd778a71c7b4");background-size:cover;background-position:center;display:flex;align-items:center;margin-bottom:50px;}
+.feature-box{background:rgba(0,0,0,0.65);backdrop-filter:blur(10px);padding:50px;border-radius:30px;}
+
+
+footer{padding:100px 0;color:#888;}
+footer a{display:block;text-decoration:none;color:#888;margin-bottom:10px;}
+footer a:hover{color:#fff;}
+
+
+#videoOverlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.9);
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+    flex-direction:column;
+}
+#videoOverlay span{
+    position:absolute;
+    top:20px;
+    right:40px;
+    font-size:30px;
+    color:white;
+    cursor:pointer;
+}
+#videoOverlay video{
+    max-width:90%;
+    border-radius:15px;
+}
+</style>
+</head>
+<body>
+
+
+<div id="intro" style="background-image: url(red2.jpg); background-size: cover;">
+  <div class="netflix-text">
+    <span>N</span><span>E</span><span>T</span><span>F</span><span>L</span><span>I</span><span>X</span>
+  </div>
+</div>
+
+<div id="main">
+
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand">NETFLIX</a>
+    <div class="collapse navbar-collapse show">
+      <ul class="navbar-nav me-auto">
+        <li class="netflix.html"><a class="nav-link">Home</a></li>
+        <li class="tv.html"><a class="nav-link">TV Shows</a></li>
+        <li class="nav-item"><a class="nav-link">Movies</a></li>
+        <li class="nav-item"><a class="nav-link">New</a></li>
+        <li class="nav-item"><a class="nav-link">My List</a></li>
+      </ul>
+      <button class="nav-btn">Sign In</button>
+    </div>
+  </div>
+</nav>
+
+
+<section class="hero" style="background-image: url(netflix1.avif); background-size: contain;">
+  <div class="container hero-content">
+    <h1 class="display-3 fw-bold">Cinematic Originals</h1>
+    <p class="fs-4">Unlimited movies, series & stories.</p>
+    <button class="btn btn-danger btn-lg me-3" onclick="openVideo()">▶ Play</button>
+    <button class="btn btn-outline-light btn-lg">More Info</button>
+  </div>
+</section>
+
+
+<div id="videoOverlay">
+    <span onclick="closeVideo()">✖</span>
+    <video id="adVideo" width="70%" controls>
+        <source src="brust.mp4" type="video/mp4">
+    </video>
+</div>
+
+
+<section class="section container">
+  <h2 class="section-title">Trending Now</h2>
+  <div class="row-scroll">
+    <div class="card-movie"><img src="https://picsum.photos/300/450?1"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?2"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?3"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?4"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?5"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?6"></div>
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">Netflix Originals</h2>
+  <div class="row-scroll">
+    <div class="card-movie"><img src="https://picsum.photos/300/450?7"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?8"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?9"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?10"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?11"></div>
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">Action & Adventure</h2>
+  <div class="row-scroll">
+    <div class="card-movie"><img src="https://picsum.photos/300/450?12"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?13"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?14"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?15"></div>
+  </div>
+</section>
+
+<section class="feature-banner" style="background-image: url(cienma.webp); background-size: contain;">
+  <div class="container">
+    <div class="feature-box col-md-6">
+      <h2 class="fw-bold">Watch Anywhere</h2>
+      <p class="fs-5">TV, laptop, tablet or phone — seamless experience.</p>
+      <button class="btn btn-danger">Start Watching</button>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">New Releases</h2>
+  <div class="row-scroll">
+    <div class="card-movie"><img src="https://picsum.photos/300/450?16"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?17"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?18"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?19"></div>
+    <div class="card-movie"><img src="https://picsum.photos/300/450?20"></div>
+  </div>
+</section>
+
+
+<footer class="container">
+  <div class="row">
+    <div class="col-md-3"><a>FAQ</a><a>Help Center</a></div>
+    <div class="col-md-3"><a>Account</a><a>Jobs</a></div>
+    <div class="col-md-3"><a>Privacy</a><a>Contact</a></div>
+    <div class="col-md-3"><a>Media</a><a>Legal</a></div>
+  </div>
+</footer>
+
+<script>
+
+setTimeout(()=>{
+  document.getElementById("intro").classList.add("fadeOut");
+  document.getElementById("main").classList.add("show");
+},3000);
+
+
+function openVideo(){
+    const overlay = document.getElementById("videoOverlay");
+    const video = document.getElementById("adVideo");
+    overlay.style.display = "flex";
+    video.play();
+}
+
+function closeVideo(){
+    const overlay = document.getElementById("videoOverlay");
+    const video = document.getElementById("adVideo");
+    video.pause();
+    video.currentTime = 0;
+    overlay.style.display = "none";
+}
+</script>
+
+</body>
+</html>
 
